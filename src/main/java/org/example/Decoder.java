@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 public class Decoder {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws IOException {
-            System.out.printf("Enter 1 to execute the program: \n0 - LC3, 1 - LC3FlowDiagram, 2- TwoComplementToDec, 3 - AddTwoComplement \n4 - DecToBinary, 5 - UnsignedBinaryToDecimal, 6 - AddUnsigned,  7 - SubtractUnsigned \n8 - DecToHex, 9 - AddHex%n");
+            System.out.printf("Enter 1 to execute the program: \n0 - LC3, 1 - AscciToHex, 2- TwoComplementToDec, 3 - AddTwoComplement \n4 - DecToBinary, 5 - UnsignedBinaryToDecimal, 6 - AddUnsigned,  7 - SubtractUnsigned \n8 - DecToHex, 9 - AddHex%n");
 
             String input = reader.readLine();
             switch (input) {
@@ -16,8 +16,8 @@ public class Decoder {
                     LC3simple();
                 }
                 case "1" -> {
-                    System.out.println("LC3 FlowDiagram NOTFINISHED:");
-                    LC3Flow();
+                    System.out.println("ASCCITOHEX");
+                    asciiToHex();
                 }
                 case "2" -> {
                     System.out.println("2's complement to Bin:");
@@ -342,42 +342,15 @@ public class Decoder {
             System.out.println(); // print an empty line if no input was processed
         }
     }
-
-    public static void LC3Flow() throws IOException {
-        String line;
-        boolean processedInput = false;
-        while ((line = reader.readLine()) != null) {
-            line = line.trim(); // trim the input string
-            if (line.isEmpty()) {
-                continue; // skip empty lines
-            }
-            if (line.matches("[01]{16}")) {
-                try {
-                    LC3Instruction instruction = LC3Instruction.decode(line);
-                    String opcode = instruction.opcode.toString();
-                    String dr = instruction.dr == 40000 ? "" : "R" + instruction.dr;
-                    String sr1 = instruction.sr1 == 40000 ? "" : ", R" + instruction.sr1;
-                    String sr2 = instruction.sr2 == 40000 ? "" : ", R" + instruction.sr2;
-                    String imm5value = instruction.imm5value == 40000 ? "" : ", #" + instruction.imm5value;
-                    String offset = instruction.offset == 40000 ? "" : ", #" + instruction.offset;
-                    String baseR = instruction.baseR == 40000 ? "" : ", R" + instruction.baseR;
-                    String trapvect8 = instruction.trapvect8 == 40000 ? "" : ", #" + instruction.trapvect8;
-                    String trapMessage = instruction.trapMessage == null ? "" : ", \"" + instruction.trapMessage + "\"";
-                    if (opcode.equals("ADD")) {
-                        System.out.println(dr + " <- " + sr1 + " + " + sr2);
-                    }else {
-                        System.out.println(opcode + " " + dr + sr1 + sr2 + imm5value + offset + baseR + trapvect8 + trapMessage);
-                    }
-                    processedInput = true;
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Invalid binary string: " + line);
-                }
-            } else {
-                System.err.println("Invalid binary string: " + line);
-            }
+    public static void asciiToHex() throws IOException {
+        String ascii = reader.readLine();
+        StringBuilder hex = new StringBuilder();
+        for (int i = 0; i < ascii.length(); i++) {
+            char c = ascii.charAt(i);
+            String hexChar = String.format("%02X", (int) c);
+            hex.append(hexChar);
         }
-        if (!processedInput) {
-            System.out.println(); // print an empty line if no input was processed
-        }
+        System.out.println(hex.toString());
     }
+
 }
