@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 public class Decoder {
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static void main(String[] args) throws IOException {
-            System.out.printf("Enter 1 to execute the program: \n0 - LC3, 1 - LC3FlowDiagram, 2- TwoComplementToDec, 3 - AddTwoComplement \n4 - DecToBinary, 5 - UnsignedBinaryToDecimal, 6 - AddUnsigned \n7 - DecToHex, 8 - AddHex%n");
+            System.out.printf("Enter 1 to execute the program: \n0 - LC3, 1 - LC3FlowDiagram, 2- TwoComplementToDec, 3 - AddTwoComplement \n4 - DecToBinary, 5 - UnsignedBinaryToDecimal, 6 - AddUnsigned,  7 - SubtractUnsigned \n8 - DecToHex, 9 - AddHex%n");
 
             String input = reader.readLine();
             switch (input) {
@@ -33,8 +33,9 @@ public class Decoder {
                     UnsignedBinToDec();
                 }
                 case "6" -> AddUnsignedBin();
-                case "7" -> decToHex();
-                case "8" -> addHex();
+                case "7" -> subtractUnsignedBin();
+                case "8" -> decToHex();
+                case "9" -> addHex();
                 default -> System.out.println("Program not executed.");
             }
     }
@@ -187,6 +188,8 @@ public class Decoder {
 
 
     public static void AddUnsignedBin() throws IOException {
+
+        while (true) {
             System.out.println("Enter the first binary number:");
             String binary1 = reader.readLine();
             System.out.println("Enter the second binary number:");
@@ -217,7 +220,38 @@ public class Decoder {
             }
 
             System.out.println("Sum of " + binary1 + " and " + binary2 + " is " + result.toString());
+        }
     }
+    public static void subtractUnsignedBin() throws IOException {
+        while (true) {
+            System.out.println("Enter the first binary number:");
+            String binary1 = reader.readLine();
+            System.out.println("Enter the second binary number:");
+            String binary2 = reader.readLine();
+            int len = Math.max(binary1.length(), binary2.length());
+
+            // Pad zeros to make both strings of equal length
+            binary1 = padZeros(binary1, len);
+            binary2 = padZeros(binary2, len);
+
+            StringBuilder result = new StringBuilder();
+            int borrow = 0;
+
+            for (int i = len - 1; i >= 0; i--) {
+                int bit1 = binary1.charAt(i) - '0';
+                int bit2 = binary2.charAt(i) - '0';
+
+                int diff = (bit1 - bit2 - borrow + 2) % 2;
+
+                result.insert(0, (char) (diff + '0'));
+
+                borrow = (bit1 - bit2 - borrow < 0) ? 1 : 0;
+            }
+
+            System.out.println("Difference of " + binary1 + " and " + binary2 + " is " + result.toString());
+        }
+    }
+
 
     public static void LC3simple() throws IOException {
         String line;
