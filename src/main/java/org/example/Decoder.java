@@ -202,9 +202,10 @@ public class Decoder {
             }
 
             // Overflow check
-            /*if (carry == 1) {
+
+             if (carry == 1) {
                 result.insert(0, '1');
-            }*/
+            }
 
             System.out.println("Sum of " + binary1 + " and " + binary2 + " is " + result.toString());
     }
