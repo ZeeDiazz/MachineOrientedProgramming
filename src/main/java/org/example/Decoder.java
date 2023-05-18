@@ -30,7 +30,10 @@ public class Decoder {
                 }
                 case "5" -> {
                     System.out.println("Write UnsignedBin:");
+                    //work with positive num & doesn't work with negative
                     UnsignedBinToDec();
+                    //Works with negative num  & doesn't work with negative
+                    //binaryToDecimal();
                 }
                 case "6" -> AddUnsignedBin();
                 case "7" -> subtractUnsignedBin();
@@ -38,6 +41,34 @@ public class Decoder {
                 case "9" -> addHex();
                 default -> System.out.println("Program not executed.");
             }
+    }
+    public static void binaryToDecimal() throws IOException {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (line.isEmpty()) {
+                continue; // skip empty lines
+            }
+            if (!line.matches("[01]+")) {
+                throw new IllegalArgumentException("Invalid binary number: " + line);
+            }
+
+            int decimal;
+            if (line.charAt(0) == '0') {
+                // Positive number, convert directly
+                decimal = Integer.parseInt(line, 2);
+            } else {
+                // Negative number, convert to two's complement
+                StringBuilder sb = new StringBuilder();
+                for (char bit : line.toCharArray()) {
+                    sb.append(bit == '0' ? '1' : '0');
+                }
+                String inverted = sb.toString();
+                decimal = -(Integer.parseInt(inverted, 2) + 1);
+            }
+
+            System.out.println(decimal);
+        }
     }
     public static void twosComplementBinaryToDecimal() throws IOException {
         String line;
@@ -171,9 +202,9 @@ public class Decoder {
             }
 
             // Overflow check
-            if (carry == 1) {
+            /*if (carry == 1) {
                 result.insert(0, '1');
-            }
+            }*/
 
             System.out.println("Sum of " + binary1 + " and " + binary2 + " is " + result.toString());
     }
