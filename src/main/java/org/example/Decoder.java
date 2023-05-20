@@ -312,9 +312,9 @@ public class Decoder {
                         boolean p = line.charAt(6) == '1';
                         if (n) {
                             dr += "n";
-                        } else if (z){
+                        } if (z){
                             sr1 += "z";
-                        } else if (p){
+                        } if (p){
                             sr2 += "p";
                         }
                         baseR = "";
